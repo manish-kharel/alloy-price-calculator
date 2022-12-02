@@ -1,0 +1,124 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/auth/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+
+import "auth_entity.proto";
+import "shared_entity.proto";
+
+message SigninRequest {
+  string username = 1;
+  string password = 2;
+}
+message SigninResponse {
+  string access_token = 1;
+  int32 expiry_miliseconds = 2;
+  Config user_config = 3;
+}
+
+message RefreshRequest {
+}
+message RefreshResponse {
+  string access_token = 1;
+  int32 expiry_miliseconds = 2;
+}
+
+message AvailableUsersRequest {
+}
+message AvailableUsersResponse {
+  message AvailableUser {
+    string username = 1;
+    enum AuthType {
+      AUTH_TYPE_UNSPECIFIED = 0;
+      AUTH_TYPE_USERNAME_PASSWORD = 1;
+      AUTH_TYPE_USERNAME_PIN = 2;
+    };
+    AuthType auth_type = 2;
+  }
+  repeated AvailableUser users = 1;
+}
+
+message MyPermissionsRequest {}
+message MyPermissionsResponse {
+  bool manage_users_roles = 1;
+  bool manage_data_workflows = 2;
+  bool manage_profiles = 3;
+  bool manage_safety_settings = 4;
+  bool carry_out_measurement = 5;
+  bool manage_system_settings = 6;
+  bool manage_user_settings = 7;
+  bool manage_measurements = 8;
+  bool manage_measurements_globally = 9;
+  bool carry_out_energy_calibration = 10;
+  bool manage_factory_data = 11;
+  bool manage_system_status = 12;
+}
+
+// Role
+
+message ListRolesRequest {}
+message ListRolesResponse {
+  repeated Role roles = 1;
+}
+
+message DeleteRoleRequest {
+  Role role = 1;
+}
+message DeleteRoleResponse {}
+
+// User
+
+message InitializeUserRequest {}
+message InitializeUserResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {
+  User user = 1;
+  bool dry_run = 2;
+  AuthenticationData authentication_data = 3;
+}
+message CreateUserResponse {}
+
+message UpdateUserRequest {
+  User user = 1;
+  bool dry_run = 2;
+  AuthenticationData authentication_data = 3;
+}
+message UpdateUserResponse {}
+
+message DeleteUserRequest {
+  string uuid = 1;
+}
+message DeleteUserResponse {}
+
+message GetUserRequest {
+  string uuid = 1;
+}
+message GetUserResponse {
+  User user = 1;
+}
+
+message ListUsersRequest {}
+
+message ListUsersResponse {
+  repeated User users = 1;
+}
+
+message GetAvailableUserOptionsRequest {}
+message GetAvailableUserOptionsResponse {
+  repeated string locales = 1;
+}
+
+message GetMyUserSettingsRequest {}
+message GetMyUserSettingsResponse {
+  User user = 1;
+}
+
+message UpdateMyUserSettingsRequest {
+  bool dry_run = 1;
+  AuthenticationData authentication_data = 2;
+  User user = 3;
+}
+message UpdateMyUserSettingsResponse {}

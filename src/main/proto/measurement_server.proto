@@ -1,0 +1,105 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/measurement/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+import "measurement_requestresponse.proto";
+
+service MeasurementService {
+
+  // MeasurementSettings
+
+  rpc UpdateMeasurementSettings(UpdateMeasurementSettingsRequest) returns (UpdateMeasurementSettingsResponse);
+  rpc GetMeasurementSettings(GetMeasurementSettingsRequest) returns (GetMeasurementSettingsResponse);
+
+  // EnergyCalibration
+
+  rpc StartEnergyCalibration(StartEnergyCalibrationRequest) returns (StartEnergyCalibrationResponse);
+  rpc StopEnergyCalibration(StopEnergyCalibrationRequest) returns (StopEnergyCalibrationResponse);
+  rpc EnergyCalibrationLiveData(EnergyCalibrationLiveDataRequest) returns (stream EnergyCalibrationLiveDataResponse);
+
+  // MeasurementFlow
+
+  rpc PerformMeasurementFlowAction(PerformMeasurementFlowActionRequest) returns (PerformMeasurementFlowActionResponse);
+  rpc MeasurementLiveData(MeasurementLiveDataRequest) returns (stream MeasurementLiveDataResponse);
+  rpc UpdateMeasurementMetaData(UpdateMeasurementMetaDataRequest) returns (UpdateMeasurementMetaDataResponse);
+
+  // DataWorkflow
+
+  rpc InitializeDataWorkflow(InitializeDataWorkflowRequest) returns (InitializeDataWorkflowResponse);
+  rpc CreateDataWorkflow(CreateDataWorkflowRequest) returns (CreateDataWorkflowResponse);
+  rpc UpdateDataWorkflow(UpdateDataWorkflowRequest) returns (UpdateDataWorkflowResponse);
+  rpc DeleteDataWorkflow(DeleteDataWorkflowRequest) returns (DeleteDataWorkflowResponse);
+  rpc GetDataWorkflow(GetDataWorkflowRequest) returns (GetDataWorkflowResponse);
+  rpc ListDataWorkflows(ListDataWorkflowsRequest) returns (ListDataWorkflowsResponse);
+
+  // Profile
+
+  rpc InitializeProfile(InitializeProfileRequest) returns (InitializeProfileResponse);
+  rpc CreateProfile(CreateProfileRequest) returns (CreateProfileResponse);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse);
+  rpc DeleteProfile(DeleteProfileRequest) returns (DeleteProfileResponse);
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc ListProfiles(ListProfilesRequest) returns (ListProfilesResponse);
+  rpc ListObjectives(ListObjectivesRequest) returns (ListObjectivesResponse);
+  //rpc ListBases(ListBasesRequest) returns (ListBasesResponse);
+
+  // MaterialGroup
+
+  rpc InitializeMaterialGroup(InitializeMaterialGroupRequest) returns (InitializeMaterialGroupResponse);
+  rpc CreateMaterialGroup(CreateMaterialGroupRequest) returns (CreateMaterialGroupResponse);
+  rpc UpdateMaterialGroup(UpdateMaterialGroupRequest) returns (UpdateMaterialGroupResponse);
+  rpc DeleteMaterialGroup(DeleteMaterialGroupRequest) returns (DeleteMaterialGroupResponse);
+  rpc GetMaterialGroup(GetMaterialGroupRequest) returns (GetMaterialGroupResponse);
+  rpc ListMaterialGroups(ListMaterialGroupsRequest) returns (ListMaterialGroupsResponse);
+
+  // MaterialGroupItem
+
+  rpc ListMaterialGroupItems(ListMaterialGroupItemsRequest) returns (ListMaterialGroupItemsResponse);
+
+  // MaterialGroupSet
+
+  rpc InitializeMaterialGroupSet(InitializeMaterialGroupSetRequest) returns (InitializeMaterialGroupSetResponse);
+  rpc CreateMaterialGroupSet(CreateMaterialGroupSetRequest) returns (CreateMaterialGroupSetResponse);
+  rpc UpdateMaterialGroupSet(UpdateMaterialGroupSetRequest) returns (UpdateMaterialGroupSetResponse);
+  rpc DeleteMaterialGroupSet(DeleteMaterialGroupSetRequest) returns (DeleteMaterialGroupSetResponse);
+  rpc GetMaterialGroupSet(GetMaterialGroupSetRequest) returns (GetMaterialGroupSetResponse);
+  rpc ListMaterialGroupSets(ListMaterialGroupSetsRequest) returns (ListMaterialGroupSetsResponse);
+
+  // ThresholdGroup
+
+  rpc InitializeThresholdGroup(InitializeThresholdGroupRequest) returns (InitializeThresholdGroupResponse);
+  rpc CreateThresholdGroup(CreateThresholdGroupRequest) returns (CreateThresholdGroupResponse);
+  rpc UpdateThresholdGroup(UpdateThresholdGroupRequest) returns (UpdateThresholdGroupResponse);
+  rpc DeleteThresholdGroup(DeleteThresholdGroupRequest) returns (DeleteThresholdGroupResponse);
+  rpc GetThresholdGroup(GetThresholdGroupRequest) returns (GetThresholdGroupResponse);
+  rpc ListThresholdGroups(ListThresholdGroupsRequest) returns (ListThresholdGroupsResponse);
+  rpc ListPeriodicTable(ListPeriodicTableRequest) returns (ListPeriodicTableResponse);
+
+  // ThresholdGroupSet
+
+  rpc InitializeThresholdGroupSet(InitializeThresholdGroupSetRequest) returns (InitializeThresholdGroupSetResponse);
+  rpc CreateThresholdGroupSet(CreateThresholdGroupSetRequest) returns (CreateThresholdGroupSetResponse);
+  rpc UpdateThresholdGroupSet(UpdateThresholdGroupSetRequest) returns (UpdateThresholdGroupSetResponse);
+  rpc DeleteThresholdGroupSet(DeleteThresholdGroupSetRequest) returns (DeleteThresholdGroupSetResponse);
+  rpc GetThresholdGroupSet(GetThresholdGroupSetRequest) returns (GetThresholdGroupSetResponse);
+  rpc ListThresholdGroupSets(ListThresholdGroupSetsRequest) returns (ListThresholdGroupSetsResponse);
+
+  // Materials
+
+  rpc InitializeMaterial(InitializeMaterialRequest) returns (InitializeMaterialResponse);
+  rpc CreateMaterial(CreateMaterialRequest) returns (CreateMaterialResponse);
+  rpc UpdateMaterial(UpdateMaterialRequest) returns (UpdateMaterialResponse);
+  rpc DeleteMaterial(DeleteMaterialRequest) returns (DeleteMaterialResponse);
+  rpc GetMaterials(GetMaterialsRequest) returns (GetMaterialsResponse);
+  rpc GetMaterial(GetMaterialRequest) returns (GetMaterialResponse);
+
+  // Measurement Archive
+  rpc ListMeasurements(ListMeasurementsRequest) returns (ListMeasurementsResponse);
+  rpc ListMeasurementUUIDs(ListMeasurementUUIDsRequest) returns(ListMeasurementUUIDsResponse);
+  rpc GetMeasurement(GetMeasurementRequest) returns (GetMeasurementResponse);
+  rpc GetMeasurementExport(GetMeasurementExportRequest) returns (GetMeasurementExportResponse);
+  rpc DeleteMeasurement(DeleteMeasurementRequest) returns (DeleteMeasurementResponse);
+  rpc ClearMeasurements(ClearMeasurementsRequest) returns (ClearMeasurementsResponse);
+
+}

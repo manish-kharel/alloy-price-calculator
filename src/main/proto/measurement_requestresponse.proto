@@ -1,0 +1,413 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/measurement/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+import "measurement_entity.proto";
+import "google/protobuf/timestamp.proto";
+
+// MeasurementSettings
+
+message UpdateMeasurementSettingsRequest {
+  UserSettings settings = 1;
+}
+message UpdateMeasurementSettingsResponse {
+  UserSettings settings = 1;
+}
+
+message GetMeasurementSettingsRequest {}
+message GetMeasurementSettingsResponse {
+  UserSettings selected = 1;
+  AvailableMeasurementSettings available = 2;
+}
+
+// EnergyCalibration
+
+message StartEnergyCalibrationRequest {}
+message StartEnergyCalibrationResponse {}
+
+message StopEnergyCalibrationRequest {}
+message StopEnergyCalibrationResponse {}
+
+message EnergyCalibrationLiveDataRequest{}
+message EnergyCalibrationLiveDataResponse{
+  EnergyCalibrationResult result = 1;
+}
+
+// MeasurementFlow
+
+message PerformMeasurementFlowActionRequest {
+  MeasurementFlowAction action = 1;
+}
+message PerformMeasurementFlowActionResponse {}
+
+message MeasurementLiveDataRequest {}
+message MeasurementLiveDataResponse {
+  MeasurementResult result = 1;
+}
+
+message GetMeasurementResultsRequest {}
+message GetMeasurementResultsResponse {
+  repeated  MeasurementResult results = 1;
+}
+
+message UpdateMeasurementMetaDataRequest {
+  MetaData meta_data = 1;
+  bool finished = 2;
+  bool dry_run = 3;
+}
+message UpdateMeasurementMetaDataResponse {
+  MeasurementResult measurement = 1;
+}
+
+// Data Workflow
+
+message InitializeDataWorkflowRequest {
+  string existing_workflow_uuid = 1;
+}
+message InitializeDataWorkflowResponse {
+  DataWorkflow workflow = 1;
+}
+
+message CreateDataWorkflowRequest {
+  DataWorkflow workflow = 1;
+  bool dry_run = 2;
+}
+message CreateDataWorkflowResponse {}
+
+message UpdateDataWorkflowRequest {
+  DataWorkflow workflow = 1;
+  bool dry_run = 2;
+}
+message UpdateDataWorkflowResponse {}
+
+message DeleteDataWorkflowRequest {
+  string uuid = 1;
+}
+message DeleteDataWorkflowResponse {}
+
+message GetDataWorkflowRequest {
+  string uuid = 1;
+}
+message GetDataWorkflowResponse {
+  DataWorkflow workflow = 1;
+}
+
+message ListDataWorkflowsRequest {
+}
+message ListDataWorkflowsResponse {
+  repeated DataWorkflow workflows = 1;
+}
+
+// Profile
+
+message InitializeProfileRequest {
+  string existing_profile_uuid = 1;
+}
+message InitializeProfileResponse {
+  Profile profile = 1;
+}
+
+message CreateProfileRequest {
+  Profile profile = 1;
+  bool dry_run = 2;
+}
+message CreateProfileResponse {}
+
+message UpdateProfileRequest {
+  Profile profile = 1;
+  bool dry_run = 2;
+}
+message UpdateProfileResponse {}
+
+message DeleteProfileRequest {
+  string uuid = 1;
+}
+message DeleteProfileResponse {}
+
+message GetProfileRequest {
+  string uuid = 1;
+}
+message GetProfileResponse {
+  Profile profile = 1;
+}
+
+message ListProfilesRequest {
+}
+message ListProfilesResponse {
+  repeated Profile profiles = 1;
+}
+
+message ListObjectivesRequest {}
+message ListObjectivesResponse {
+  repeated Objective objectives = 1;
+}
+
+//message ListBasesRequest {}
+//message ListBasesResponse {
+//  repeated Base bases = 1;
+//}
+
+// MaterialGroup
+
+message InitializeMaterialGroupRequest {
+  string existing_repository_uuid = 1;
+}
+message InitializeMaterialGroupResponse {
+  MaterialGroup repository = 1;
+}
+
+message CreateMaterialGroupRequest {
+  MaterialGroup repository = 1;
+  bool dry_run = 2;
+}
+message CreateMaterialGroupResponse {}
+
+message UpdateMaterialGroupRequest {
+  MaterialGroup repository = 1;
+  bool dry_run = 2;
+}
+message UpdateMaterialGroupResponse {}
+
+message DeleteMaterialGroupRequest {
+  string uuid = 1;
+}
+message DeleteMaterialGroupResponse {}
+
+message GetMaterialGroupRequest {
+  string uuid = 1;
+}
+message GetMaterialGroupResponse {
+  MaterialGroup repository = 1;
+}
+
+message ListMaterialGroupsRequest {
+  string name_filter = 1;
+  string material_group_set_uuid_filter = 2;
+}
+
+message ListMaterialGroupsResponse {
+  repeated MaterialGroup repositories = 1;
+}
+
+// MaterialGroupItem
+
+message ListMaterialGroupItemsRequest {
+  string name_filter = 1;
+  string material_group_uuid_filter = 2;
+}
+
+message ListMaterialGroupItemsResponse {
+  repeated MaterialGroupItem material_group_items = 1;
+}
+
+// MaterialGroupSet
+
+message InitializeMaterialGroupSetRequest {
+  string existing_repository_uuid = 1;
+}
+message InitializeMaterialGroupSetResponse {
+  MaterialGroupSet repository = 1;
+}
+
+message CreateMaterialGroupSetRequest {
+  MaterialGroupSet repository = 1;
+  bool dry_run = 2;
+}
+message CreateMaterialGroupSetResponse {}
+
+message UpdateMaterialGroupSetRequest {
+  MaterialGroupSet repository = 1;
+  bool dry_run = 2;
+}
+message UpdateMaterialGroupSetResponse {}
+
+message DeleteMaterialGroupSetRequest {
+  string uuid = 1;
+}
+message DeleteMaterialGroupSetResponse {}
+
+message GetMaterialGroupSetRequest {
+  string uuid = 1;
+}
+message GetMaterialGroupSetResponse {
+  MaterialGroupSet repository = 1;
+}
+
+message ListMaterialGroupSetsRequest {
+  string name_filter = 1;
+}
+message ListMaterialGroupSetsResponse {
+  repeated MaterialGroupSet repositories = 1;
+}
+
+// ThresholdGroup
+
+message InitializeThresholdGroupRequest {
+  string existing_repository_uuid = 1;
+}
+message InitializeThresholdGroupResponse {
+  ThresholdGroup repository = 1;
+}
+
+message CreateThresholdGroupRequest {
+  ThresholdGroup repository = 1;
+  bool dry_run = 2;
+}
+message CreateThresholdGroupResponse {}
+
+message UpdateThresholdGroupRequest {
+  ThresholdGroup repository = 1;
+  bool dry_run = 2;
+}
+message UpdateThresholdGroupResponse {}
+
+message DeleteThresholdGroupRequest {
+  string uuid = 1;
+}
+message DeleteThresholdGroupResponse {}
+
+message GetThresholdGroupRequest {
+  string uuid = 1;
+}
+message GetThresholdGroupResponse {
+  ThresholdGroup repository = 1;
+}
+
+message ListThresholdGroupsRequest {
+  string name_filter = 1;
+  string threshold_group_set_uuid_filter = 2;
+}
+message ListThresholdGroupsResponse {
+  repeated ThresholdGroup repositories = 1;
+}
+
+message ListPeriodicTableRequest {}
+message ListPeriodicTableResponse{
+  repeated Element elements = 1;
+}
+
+// ThresholdGroupSet
+
+message InitializeThresholdGroupSetRequest {
+  string existing_repository_uuid = 1;
+}
+message InitializeThresholdGroupSetResponse {
+  ThresholdGroupSet repository = 1;
+}
+
+message CreateThresholdGroupSetRequest {
+  ThresholdGroupSet repository = 1;
+  bool dry_run = 2;
+}
+message CreateThresholdGroupSetResponse {}
+
+message UpdateThresholdGroupSetRequest {
+  ThresholdGroupSet repository = 1;
+  bool dry_run = 2;
+}
+message UpdateThresholdGroupSetResponse {}
+
+message DeleteThresholdGroupSetRequest {
+  string uuid = 1;
+}
+message DeleteThresholdGroupSetResponse {}
+
+message GetThresholdGroupSetRequest {
+  string uuid = 1;
+}
+message GetThresholdGroupSetResponse {
+  ThresholdGroupSet repository = 1;
+}
+
+message ListThresholdGroupSetsRequest {
+  string name_filter = 1;
+}
+message ListThresholdGroupSetsResponse {
+  repeated ThresholdGroupSet repositories = 1;
+}
+
+// Materials
+
+message InitializeMaterialRequest {
+  string existing_repository_uuid = 1;
+}
+message InitializeMaterialResponse {
+  Material material = 1;
+}
+
+message CreateMaterialRequest {
+  Material material = 1;
+  bool dry_run = 2;
+}
+message CreateMaterialResponse {}
+
+message UpdateMaterialRequest {
+  Material material = 1;
+  bool dry_run = 2;
+}
+message UpdateMaterialResponse {}
+
+message DeleteMaterialRequest {
+  string uuid = 1;
+}
+message DeleteMaterialResponse {}
+
+
+message GetMaterialsRequest {
+  string name_filter = 1;
+  TypeFilter type_filter = 2;
+  Sorting sorting = 3;
+}
+message GetMaterialsResponse {
+  repeated Material materials = 1;
+}
+
+message GetMaterialRequest {
+  string uuid = 1;
+}
+message GetMaterialResponse {
+  Material material = 1;
+}
+
+// Measurement Archive
+
+message ListMeasurementsRequest {
+  string start_reference = 1;
+  int32 result_count = 2;
+  string filter_uuid = 3;
+}
+
+message ListMeasurementsResponse {
+  repeated MeasurementSummary measurements = 1;
+  string next_reference = 2;
+}
+
+message ListMeasurementUUIDsRequest {
+  google.protobuf.Timestamp start_date = 1;
+}
+
+message ListMeasurementUUIDsResponse {
+  repeated string uuids = 1;
+}
+
+message GetMeasurementRequest{
+  string uuid = 1;
+}
+message GetMeasurementExportRequest{
+  string uuid = 1;
+}
+message GetMeasurementResponse {
+  MeasurementResult measurement = 1;
+}
+message GetMeasurementExportResponse {
+  ExportMeasurement measurement = 1;
+}
+
+message DeleteMeasurementRequest {
+  string uuid = 1;
+}
+message DeleteMeasurementResponse {}
+
+message ClearMeasurementsRequest {}
+message ClearMeasurementsResponse {}
