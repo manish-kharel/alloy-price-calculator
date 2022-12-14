@@ -19,15 +19,4 @@ class AlloyPriceCalculatorApplication
 
 fun main(args: Array<String>) {
   runApplication<AlloyPriceCalculatorApplication>(*args)
-
-//  val channel = ManagedChannelBuilder.forAddress("localhost", 3001)
-//    .usePlaintext().build()
-//
-//  val stub = AuthenticationServiceGrpc.newBlockingStub(channel)
-//  val response = stub.signin(
-//    SigninRequest.newBuilder().setUsername("pin")
-//      .setPassword("0000")
-//      .build()
-//  )
-
 }

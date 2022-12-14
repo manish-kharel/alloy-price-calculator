@@ -53,10 +53,6 @@ dependencies {
   implementation ("io.grpc:grpc-netty:1.51.0")
   implementation("io.grpc:grpc-kotlin-stub:1.3.0")
 
-  //not needed .. cleanup
-  //  implementation("com.google.protobuf:protobuf-kotlin:3.21.10")
-  //  implementation("io.grpc:grpc-stub:1.51.0")
-  //  implementation("com.google.protobuf:protobuf-java:3.21.9")
 }
 
 protobuf {

@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate
 @Configuration
 class GrpcClientConfiguration {
 
-  @Bean("grpcClientConfiguration")
+  @Bean("grpcClient")
   fun grpcClient() = ManagedChannelBuilder.forAddress("localhost", 3001)
     .usePlaintext().build()
 }
