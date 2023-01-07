@@ -31,5 +31,11 @@ enum class Metal {
   MANGANESE,
   NEODYMIUM,
   TELLURIUM,
-  UNDEFINED
+
+  // not avaialble for Metals API
+  CHROMIUM,
+  NEOBIUM,
+  VANADIUM,
+  TITANIUM,
+  UNDEFINED,
 }

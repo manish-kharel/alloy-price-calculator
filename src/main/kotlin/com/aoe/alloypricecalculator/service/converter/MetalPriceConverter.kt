@@ -19,8 +19,10 @@ class MetalPriceConverter {
         MetalPrice(
           name = getMetalEnum(name),
           costPerUnit = 1 / rate,
-          lastUpdated = getDateTimeFromTimeStamp(jsonObject.getLong("timestamp")),
+//          lastUpdated = getDateTimeFromTimeStamp(jsonObject.getLong("timestamp")),
+          lastUpdated = LocalDateTime.now(),
           baseCurrency = jsonObject.getString("base"),
+
           unit = convertUnitToEnum(jsonObject.getString("unit"))
         )
       } else

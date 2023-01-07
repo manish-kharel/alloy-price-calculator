@@ -1,47 +1,53 @@
 package com.aoe.alloypricecalculator.web
 
-import com.aoe.alloypricecalculator.domain.MetalPriceService
+import com.aoe.alloypricecalculator.createSlf4jLogger
 import com.aoe.alloypricecalculator.domain.MeasurementService
+import com.aoe.alloypricecalculator.domain.MetalPriceService
 import com.aoe.alloypricecalculator.domain.model.Authentication
-import com.aoe.alloypricecalculator.domain.model.Measurement
+import com.aoe.alloypricecalculator.domain.model.GrpcUser
+import com.aoe.alloypricecalculator.exception.InvalidAuthenticationException
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@CrossOrigin
 class PriceController(
   private val metalPriceService: MetalPriceService,
   private val measurementService: MeasurementService
 ) {
+  private val logger = createSlf4jLogger()
 
   @GetMapping(path = ["/prices"], produces = [MediaType.APPLICATION_JSON_VALUE])
-  fun getMetalPrices() = metalPriceService.getMetalPrices()
-
-  @GetMapping(path = ["/test"])
-  fun getAuthentication() = measurementService.checkAuthentication()
-
-
-  @GetMapping(path = ["/test2"])
-  fun requestAnalysisSummaryList(
-//    @RequestBody(required = true) authentication: Authentication
-  ) = Authentication(
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
-        ".eyJleHAiOjE3MDE3OTQyMjgsInNpZCI6IjdjYWEwNzY2LTZiNjktNDc3Ni05MmEwLTZjM2JhYjBkMmIwMiIsInVzZXJuYW1lIjoicGluIn0." +
-        "SH0Newv0-sFIBi9IV85eRzDh7t7gG77SW0_GxTKEHv8",
-    isValid = true
-  ).let {
-  measurementService.getMeasurementList(it)
+  fun getMetalPrices() = metalPriceService.getMetalPrices().also {
+    logger.info("working")
   }
 
+  @PostMapping(path = ["/getAuthentication"], consumes = [MediaType.APPLICATION_JSON_VALUE])
+  fun getAuthentication(
+    @RequestBody grpcUser: GrpcUser
+  ): ResponseEntity<Authentication> = measurementService.getAuthentication(grpcUser).let { authentication ->
+    if (authentication.token.isNotBlank())
+      ResponseEntity(authentication, HttpStatus.OK)
+    else
+      throw InvalidAuthenticationException(authentication, "Username and Password did not match")
+  }
 
-  @GetMapping(path = ["/test3"])
-  fun requestMeasurementValues() =
-    Authentication(
-      token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzA1OTM4NTQsInNpZCI6ImI4MjYzOGJiLWY0YjAtNDljYS04YjNjLT" +
-          "NjMTk3ZWVhMWEyMyIsInVzZXJuYW1lIjoicGluIn0.j4KJSv5s60_15impajsjOSNZXSEtMcvC1JSIqMTzKCA",
-      isValid = true
-    ).let {
-   measurementService.getMeasurementValues(it, "de13b4e3-aa8c-4379-bacd-d39ab037655e")
-    }
+  @GetMapping(path = ["/getAnalysisSummaryList"], produces = [MediaType.APPLICATION_JSON_VALUE])
+  fun requestAnalysisSummaryList(
+    @RequestHeader(required = true) authentication: Authentication
+  ) = measurementService.getMeasurementList(authentication)
+
+  @GetMapping(path = ["/getMeasurement"])
+  fun requestMeasurementValues(
+    @RequestHeader(required = true) authentication: Authentication,
+    @RequestParam uuid: String
+  ) = measurementService.getMeasurementValues(authentication, uuid)
 }

@@ -51,35 +51,41 @@ class MeasurementConverter {
     )
   }
 
-  private fun getMetalEnum(name: String): Metal = when (name) {
-    "Au" -> Metal.GOLD_24K
-    "Ag" -> Metal.SILVER
-    "Pt" -> Metal.PLATINUM
-    "Pd" -> Metal.PALLADIUM
-    "Cu" -> Metal.PALLADIUM
-    "Rh" -> Metal.RHODIUM
-    "Ru" -> Metal.RUTHENIUM
-    "Al" -> Metal.ALUMINUM
-    "Ni" -> Metal.NICKEL
-    "Zn" -> Metal.ZINC
-    "Sn" -> Metal.TIN
-    "Co" -> Metal.COBALT
-    "Ir" -> Metal.IRIDIUM
-    "Pb" -> Metal.LEAD
-    "Fe" -> Metal.IRON_ORE_62PERCENT_FE
-    "U" -> Metal.URANIUM
-    "Mg" -> Metal.MAGNESIUM
-    "Os" -> Metal.OSMIUM
-    "Re" -> Metal.RHENIUM
-    "In" -> Metal.INDIUM
-    "Mo" -> Metal.MOLYBDENUM
-    "W" -> Metal.TUNGSTEN
-    "Li" -> Metal.LITHIUM
-    "Sb" -> Metal.ANTIMONY
-    "Ga" -> Metal.GALLIUM
-    "Mn" -> Metal.MANGANESE
-    "Nd" -> Metal.NEODYMIUM
-    "Te" -> Metal.TELLURIUM
-    else -> Metal.UNDEFINED
-  }
+  private fun getMetalEnum(name: String): Metal =
+    when (name) {
+      "Au" -> Metal.GOLD_24K
+      "Ag" -> Metal.SILVER
+      "Pt" -> Metal.PLATINUM
+      "Pd" -> Metal.PALLADIUM
+      "Cu" -> Metal.COPPER
+      "Rh" -> Metal.RHODIUM
+      "Ru" -> Metal.RUTHENIUM
+      "Al" -> Metal.ALUMINUM
+      "Ni" -> Metal.NICKEL
+      "Zn" -> Metal.ZINC
+      "Sn" -> Metal.TIN
+      "Co" -> Metal.COBALT
+      "Ir" -> Metal.IRIDIUM
+      "Pb" -> Metal.LEAD
+      "Fe" -> Metal.IRON_ORE_62PERCENT_FE
+      "U" -> Metal.URANIUM
+      "Mg" -> Metal.MAGNESIUM
+      "Os" -> Metal.OSMIUM
+      "Re" -> Metal.RHENIUM
+      "In" -> Metal.INDIUM
+      "Mo" -> Metal.MOLYBDENUM
+      "W" -> Metal.TUNGSTEN
+      "Li" -> Metal.LITHIUM
+      "Sb" -> Metal.ANTIMONY
+      "Ga" -> Metal.GALLIUM
+      "Mn" -> Metal.MANGANESE
+      "Nd" -> Metal.NEODYMIUM
+      "Te" -> Metal.TELLURIUM
+      "Cr" -> Metal.CHROMIUM
+      "Nb" -> Metal.NEOBIUM
+      "V" -> Metal.VANADIUM
+      "Ti" -> Metal.TITANIUM
+      else -> Metal.UNDEFINED
+
+    }
 }

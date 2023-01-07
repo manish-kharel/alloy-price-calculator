@@ -10,7 +10,10 @@ import com.aoe.alloypricecalculator.createSlf4jLogger
 import com.aoe.alloypricecalculator.domain.MeasurementService
 import com.aoe.alloypricecalculator.domain.model.AnalysisSummary
 import com.aoe.alloypricecalculator.domain.model.Authentication
+import com.aoe.alloypricecalculator.domain.model.GrpcUser
+import com.aoe.alloypricecalculator.domain.model.Measurement
 import io.grpc.ManagedChannel
+import io.grpc.StatusRuntimeException
 import io.grpc.stub.MetadataUtils
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -23,21 +26,20 @@ class MeasurementServiceImpl(
 ) : MeasurementService {
 
   val logger = createSlf4jLogger()
-  override fun checkAuthentication() = AuthenticationServiceGrpc.newBlockingStub(channel).let { stub ->
+  override fun getAuthentication(grpcUser: GrpcUser) = AuthenticationServiceGrpc.newBlockingStub(channel).let { stub ->
     stub.signin(
       AuthRequestresponse.SigninRequest.newBuilder()
-        .setUsername("pin")
-        .setPassword("0000")
+        .setUsername(grpcUser.username)
+        .setPassword(grpcUser.password)
         .build()
     )
   }.let { response ->
     Authentication(
-      token = response.accessToken,
-      isValid = response.accessToken.isNotBlank() && response.expiryMiliseconds > 0
+      token = response.accessToken
     )
   }
 
-  override fun getMeasurementList(authentication: Authentication): List<AnalysisSummary> = if (authentication.isValid) {
+  override fun getMeasurementList(authentication: Authentication): List<AnalysisSummary> = try {
     val metadata = setMetadata(authentication)
 
     MeasurementServiceGrpc.newBlockingStub(channel).run {
@@ -52,10 +54,12 @@ class MeasurementServiceImpl(
     ).let { response ->
       measurementConverter.convertMeasurementSummary(response.measurementsList)
     }
-  } else emptyList()
+  } catch (ex : StatusRuntimeException) {
+    emptyList()
+  }
 
   override fun getMeasurementValues(authentication: Authentication, measurement_uuid: String) =
-    if (authentication.isValid) {
+    if (authentication.token.isNotBlank()) {
       val metadata = setMetadata(authentication)
 
       MeasurementServiceGrpc.newBlockingStub(channel).run {
@@ -67,9 +71,9 @@ class MeasurementServiceImpl(
           .setUuid(measurement_uuid)
           .build()
       ).let { measurementResponse ->
-        measurementConverter.convertMeasurementValues(measurementResponse.measurement)
+        listOf(measurementConverter.convertMeasurementValues(measurementResponse.measurement))
       }
-    } else throw java.lang.RuntimeException()
+    } else emptyList()
 
   private fun setMetadata(authentication: Authentication) = Metadata().apply {
     this.put(
