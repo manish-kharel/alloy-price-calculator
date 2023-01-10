@@ -1,5 +1,6 @@
 package com.aoe.alloypricecalculator.service.converter
 
+import com.aoe.alloypricecalculator.domain.model.Currency
 import com.aoe.alloypricecalculator.domain.model.Metal
 import com.aoe.alloypricecalculator.domain.model.MetalPrice
 import org.json.JSONObject
@@ -11,7 +12,7 @@ import java.time.ZoneId
 @Component
 class MetalPriceConverter {
 
-  fun convert(response: String?) = convertElement(JSONObject(response))
+  fun convertMetalPrices(response: String?) = convertElement(JSONObject(response))
 
   private fun convertElement(jsonObject: JSONObject): List<MetalPrice> =
     getNameAndCostMap(jsonObject.getJSONObject("rates"))?.mapNotNull { (name, rate) ->
@@ -19,8 +20,8 @@ class MetalPriceConverter {
         MetalPrice(
           name = getMetalEnum(name),
           costPerUnit = 1 / rate,
-//          lastUpdated = getDateTimeFromTimeStamp(jsonObject.getLong("timestamp")),
-          lastUpdated = LocalDateTime.now(),
+          lastUpdated = getDateTimeFromTimeStamp(jsonObject.getLong("timestamp")),
+//          lastUpdated = LocalDateTime.now(),
           baseCurrency = jsonObject.getString("base"),
 
           unit = convertUnitToEnum(jsonObject.getString("unit"))
@@ -28,6 +29,29 @@ class MetalPriceConverter {
       } else
         null
     } ?: emptyList()
+
+
+  fun convertCurrencyRates(response: String) = JSONObject(response).getJSONObject("rates").let { ratesJson ->
+    getNameAndCostMap(ratesJson)
+  }?.mapNotNull { (name, rate) ->
+    if (!filterJsonForMetalOnly(name) && !filterUnusedMetalEntities(name)) {
+      Currency(
+        name,
+        rate
+      )
+    } else
+      null
+  } ?: emptyList()
+
+  private fun filterUnusedMetalEntities(name: String): Boolean = (
+      name == "LBXAUAM" || name == "LBXAUPM" || name == "LBXAG" || name == "LBXPTAM" || name == "LBXPTPM" || name == "LBXPDAM"
+          || name == "LBXPDPM" || name == "LME-ALU" || name == "LME-XCU" || name == "LME-ZNC" || name == "LME-NI" || name == "LME-LEAD"
+          || name == "LME-TIN" || name == "STEEL-SC" || name == "STEEL-RE" || name == "STEEL-HR" || name == "XAU-AHME" || name == "XAU-BANG"
+          || name == "XAU-CHEN" || name == "XAU-COIM" || name == "XAU-DELH" || name == "XAU-HYDE" || name == "XAU-KOCH" || name == "XAU-KOLK"
+          || name == "XAU-MUMB" || name == "XAU-SURA" || name == "XAG-AHME" || name == "XAG-BANG"
+          || name == "XAG-CHEN" || name == "XAG-COIM" || name == "XAG-DELH" || name == "XAG-HYDE" || name == "XAG-KOCH" || name == "XAG-KOLK"
+          || name == "XAG-MUMB" || name == "XAG-SURA"
+      )
 
   private fun filterJsonForMetalOnly(name: String): Boolean =
     name == "XAU" || name == "XAG" || name == "XPT" || name == "XPD" || name == "XCU" || name == "XRH" ||

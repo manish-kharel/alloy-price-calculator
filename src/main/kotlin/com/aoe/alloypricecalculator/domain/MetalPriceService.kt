@@ -5,5 +5,5 @@ import org.springframework.stereotype.Component
 
 @Component
 interface MetalPriceService {
-  fun getMetalPrices(): List<MetalPrice>?
+  fun getMetalPrices(): List<MetalPrice>
 }

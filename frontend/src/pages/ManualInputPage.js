@@ -16,7 +16,6 @@ import Paper from '@mui/material/Paper';
 
 export default function ManualInputPage() {
 
-
     const [priceMap, setPriceMap] = useState(new Map)
 
     const [metalOptions, setMetalOptions] = useState([])

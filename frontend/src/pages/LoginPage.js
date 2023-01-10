@@ -16,6 +16,9 @@ const theme = createTheme();
 export default function SignIn() {
 
     const [auth, setAuth] = useState(false)
+
+    const [loginErrorMsg, setLoginErrorMsg] = useState()
+
     let navigate = useNavigate()
 
     useEffect(() => {
@@ -33,7 +36,7 @@ export default function SignIn() {
             localStorage.setItem('token', authentication.data.token);
             setAuth(true)
         } catch (exception) {
-            if (exception.response.status === 401) alert("Login credentials incorrect")
+            if (exception.response.status === 401) setLoginErrorMsg("Username or Password invalid")
             console.log(exception.response.status)
         }
     };
@@ -74,6 +77,9 @@ export default function SignIn() {
                             id="password"
                             autoComplete="current-password"
                         />
+                        <Typography variant = "h6" sx = {{color:"red"}}>
+                            {loginErrorMsg}
+                        </Typography>
                         <Button
                             type="submit"
                             fullWidth

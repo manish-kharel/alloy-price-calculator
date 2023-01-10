@@ -10,7 +10,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "metalprices")
+@Table(name = "metal_prices")
 class MetalPrice(
 
  @Enumerated(EnumType.STRING)

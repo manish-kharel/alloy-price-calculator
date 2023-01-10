@@ -12,6 +12,8 @@ import com.aoe.alloypricecalculator.domain.model.AnalysisSummary
 import com.aoe.alloypricecalculator.domain.model.Authentication
 import com.aoe.alloypricecalculator.domain.model.GrpcUser
 import com.aoe.alloypricecalculator.domain.model.Measurement
+import com.aoe.alloypricecalculator.exception.ExpiredTokenException
+import com.aoe.alloypricecalculator.exception.InvalidAuthenticationException
 import io.grpc.ManagedChannel
 import io.grpc.StatusRuntimeException
 import io.grpc.stub.MetadataUtils
@@ -54,26 +56,29 @@ class MeasurementServiceImpl(
     ).let { response ->
       measurementConverter.convertMeasurementSummary(response.measurementsList)
     }
-  } catch (ex : StatusRuntimeException) {
-    emptyList()
+  } catch (ex: StatusRuntimeException) {
+    throw ExpiredTokenException("The user token has expired")
   }
 
-  override fun getMeasurementValues(authentication: Authentication, measurement_uuid: String) =
-    if (authentication.token.isNotBlank()) {
-      val metadata = setMetadata(authentication)
+  override fun getMeasurementValues(authentication: Authentication, measurement_uuid: String) = try {
+    val metadata = setMetadata(authentication)
 
-      MeasurementServiceGrpc.newBlockingStub(channel).run {
-        this.withInterceptors(
-          MetadataUtils.newAttachHeadersInterceptor(metadata)
-        )
-      }.getMeasurement(
-        MeasurementRequestresponse.GetMeasurementRequest.newBuilder()
-          .setUuid(measurement_uuid)
-          .build()
-      ).let { measurementResponse ->
-        listOf(measurementConverter.convertMeasurementValues(measurementResponse.measurement))
-      }
-    } else emptyList()
+    MeasurementServiceGrpc.newBlockingStub(channel).run {
+      this.withInterceptors(
+        MetadataUtils.newAttachHeadersInterceptor(metadata)
+      )
+    }.getMeasurement(
+      MeasurementRequestresponse.GetMeasurementRequest.newBuilder()
+        .setUuid(measurement_uuid)
+        .build()
+    ).let { measurementResponse ->
+      listOf(measurementConverter.convertMeasurementValues(measurementResponse.measurement))
+    }
+  } catch (ex: StatusRuntimeException) {
+    throw ExpiredTokenException(" ${ex.message}").also {
+      logger.info(ex.message)
+    }
+  }
 
   private fun setMetadata(authentication: Authentication) = Metadata().apply {
     this.put(
