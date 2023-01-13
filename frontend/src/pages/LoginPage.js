@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,7 +9,6 @@ import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {getAuthentication} from "../helper/Controller";
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
 
 const theme = createTheme();
 
@@ -17,7 +17,7 @@ export default function SignIn() {
 
     const [auth, setAuth] = useState(false)
 
-    const [loginErrorMsg, setLoginErrorMsg] = useState()
+    const [loginErrorMsg, setLoginErrorMsg] = useState("")
 
     let navigate = useNavigate()
 
@@ -34,6 +34,7 @@ export default function SignIn() {
                 data.get("username"), data.get("password")
             )
             localStorage.setItem('token', authentication.data.token);
+            localStorage.setItem('username', data.get("username"));
             setAuth(true)
         } catch (exception) {
             if (exception.response.status === 401) setLoginErrorMsg("Username or Password invalid")
@@ -77,7 +78,7 @@ export default function SignIn() {
                             id="password"
                             autoComplete="current-password"
                         />
-                        <Typography variant = "h6" sx = {{color:"red"}}>
+                        <Typography variant="h6" sx={{color: "red"}}>
                             {loginErrorMsg}
                         </Typography>
                         <Button

@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {getAllMetalPrices, getAnalysisSummaryList, getMeasurement} from "../helper/Controller";
 import {useNavigate} from "react-router-dom";
 import Box from '@mui/material/Box';
@@ -18,12 +17,13 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 
+import Container from '@mui/material/Container';
+
 function Row(props) {
     const {row} = props;
     const [open, setOpen] = useState(false);
     const [measurements, setMeasurements] = useState([]);
     const [totalWeight, setTotalWeight] = useState(0);
-
     const [measurementColumns, setMeasurementColumns] = useState(["Metal", "Percentage Composition", "Standard Deviation"])
 
     const onRowClick = async (uuid) => {
@@ -59,13 +59,21 @@ function Row(props) {
                 const newMeasurement = {...item, equivalentWeight, equivalentPrice}
                 newItems.push(newMeasurement)
             })
-
-            console.log(newItems)
             setMeasurementColumns(["Metal", "Percentage Composition", "Standard Deviation", 'Equivalent Weight', 'Equivalent Price'])
             setMeasurements(newItems)
+
         }).catch(error => {
             console.log(error);
         })
+    }
+
+    const calculateTotalPrice = () => {
+        let sum = 0;
+        measurements.map((item) => {
+            sum = sum + item.equivalentPrice
+        })
+        console.log("summm", sum)
+        return sum;
     }
 
     return (
@@ -83,11 +91,11 @@ function Row(props) {
                 <TableCell component="th" scope="row">
                     {row.id}
                 </TableCell>
-                <TableCell align="right">{row.username}</TableCell>
-                <TableCell align="right">{row.profileName}</TableCell>
-                <TableCell align="right">{row.referenceName}</TableCell>
-                <TableCell align="right">{row.resultType}</TableCell>
-                <TableCell align="right">{row.measurementType}</TableCell>
+                <TableCell align="center">{row.username}</TableCell>
+                <TableCell align="center">{row.profileName}</TableCell>
+                <TableCell align="center">{row.referenceName}</TableCell>
+                <TableCell align="center">{row.resultType}</TableCell>
+                <TableCell align="center">{row.measurementType}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
@@ -96,29 +104,41 @@ function Row(props) {
                             <Typography variant="h6" gutterBottom component="div">
                                 Measurements
                             </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        {measurementColumns.map((item, index) => (
-                                            <TableCell key={index}>{item}</TableCell>
+                            {
+                                measurements[0] && <Table size="small" aria-label="purchases">
+                                    <TableHead>
+                                        <TableRow>
+                                            {measurementColumns.map((item, index) => (
+                                                <TableCell key={index}>{item}</TableCell>
+                                            ))}
+
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {measurements.map((measurement, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell component="th" scope="row">
+                                                    {measurement.metal}
+                                                </TableCell>
+                                                <TableCell>{measurement.value}</TableCell>
+                                                <TableCell align="center">{measurement.standardDeviation}</TableCell>
+                                                {(measurement.equivalentWeight || measurement.equivalentWeight === 0) &&
+                                                    <TableCell align="center">{measurement.equivalentWeight}</TableCell>}
+                                                {(measurement.equivalentPrice || measurement.equivalentPrice === 0) &&
+                                                    <TableCell align="center">{measurement.equivalentPrice}</TableCell>}
+                                            </TableRow>
                                         ))}
 
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {measurements.map((measurement, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell component="th" scope="row">
-                                                {measurement.metal}
-                                            </TableCell>
-                                            <TableCell>{measurement.value}</TableCell>
-                                            <TableCell align="right">{measurement.standardDeviation}</TableCell>
-                                            {measurement.equivalentWeight && <TableCell align="right">{measurement.equivalentWeight}</TableCell>}
-                                            {(measurement.equivalentPrice  || measurement.equivalentPrice === 0) && <TableCell align="right">{measurement.equivalentPrice}</TableCell>}
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                                        {measurements[0].equivalentPrice &&
+                                            <TableRow>
+                                                <TableCell colSpan={3}></TableCell>
+                                                <TableCell align="center">Subtotal</TableCell>
+                                                <TableCell align="center">{calculateTotalPrice()}</TableCell>
+                                            </TableRow>
+                                        }
+                                    </TableBody>
+                                </Table>
+                            }
                             <p> Enter Sample Weight in Grams</p>
                             <TextField
                                 id="sample-weight"
@@ -149,26 +169,28 @@ function AnalysisSummariesPage() {
     }, [])
 
     return (
-        <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell/>
-                        <TableCell align="left">Id</TableCell>
-                        <TableCell align="right">Username</TableCell>
-                        <TableCell align="right">Profile Name</TableCell>
-                        <TableCell align="right">Reference Name</TableCell>
-                        <TableCell align="right">Result Type</TableCell>
-                        <TableCell align="right">Measurement Type</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {summaryList.map((row) => (
-                        <Row key={row.id} row={row}/>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Container maxWidth="lg">
+            <TableContainer component={Paper} sx={{marginTop: "20px"}}>
+                <Table aria-label="collapsible table" size="small">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell/>
+                            <TableCell align="center">Id</TableCell>
+                            <TableCell align="center">Username</TableCell>
+                            <TableCell align="center">Profile Name</TableCell>
+                            <TableCell align="center">Reference Name</TableCell>
+                            <TableCell align="center">Result Type</TableCell>
+                            <TableCell align="center">Measurement Type</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {summaryList.map((row) => (
+                            <Row key={row.id} row={row}/>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Container>
     );
 }
 

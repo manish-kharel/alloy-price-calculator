@@ -26,10 +26,13 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
   @ExceptionHandler(value = [(MetalsApiFailedException::class)])
   fun handleMetalsApiFailedException(ex: MetalsApiFailedException): ResponseEntity<List<MetalPrice>> {
+
     val headers = LinkedMultiValueMap<String, String>()
     headers.add(HttpHeaders.WARNING, "NOT_REAL_TIME")
 
     return ResponseEntity(ex.prices, headers, HttpStatus.OK)
+
+    return ResponseEntity(ex.prices, HttpStatus.NON_AUTHORITATIVE_INFORMATION)
   }
 
 

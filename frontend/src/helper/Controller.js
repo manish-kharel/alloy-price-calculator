@@ -6,6 +6,12 @@ export const getAllMetalPrices = async () => {
     return priceList
 };
 
+
+export const getListOfAllExchangeRates = async () => {
+    const currencyRates = await axios.get("/getListOfAllExchangeRates");
+    return currencyRates
+};
+
 export const getAuthentication = async (username, password) => {
     return await axios.post("/getAuthentication", {
         username,
