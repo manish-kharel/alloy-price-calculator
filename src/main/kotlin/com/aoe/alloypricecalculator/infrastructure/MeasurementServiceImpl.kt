@@ -1,19 +1,14 @@
-package com.aoe.alloypricecalculator.service
+package com.aoe.alloypricecalculator.infrastructure
 
-import client.v1.AuthRequestresponse
-import client.v1.AuthenticationServiceGrpc
 import client.v1.MeasurementRequestresponse
 import client.v1.MeasurementServiceGrpc
-import com.aoe.alloypricecalculator.service.converter.MeasurementConverter
+import com.aoe.alloypricecalculator.infrastructure.converter.MeasurementConverter
 import io.grpc.Metadata
 import com.aoe.alloypricecalculator.createSlf4jLogger
 import com.aoe.alloypricecalculator.domain.MeasurementService
 import com.aoe.alloypricecalculator.domain.model.AnalysisSummary
 import com.aoe.alloypricecalculator.domain.model.Authentication
-import com.aoe.alloypricecalculator.domain.model.GrpcUser
-import com.aoe.alloypricecalculator.domain.model.Measurement
-import com.aoe.alloypricecalculator.exception.ExpiredTokenException
-import com.aoe.alloypricecalculator.exception.InvalidAuthenticationException
+import com.aoe.alloypricecalculator.domain.exception.ExpiredTokenException
 import io.grpc.ManagedChannel
 import io.grpc.StatusRuntimeException
 import io.grpc.stub.MetadataUtils
@@ -28,18 +23,6 @@ class MeasurementServiceImpl(
 ) : MeasurementService {
 
   val logger = createSlf4jLogger()
-  override fun getAuthentication(grpcUser: GrpcUser) = AuthenticationServiceGrpc.newBlockingStub(channel).let { stub ->
-    stub.signin(
-      AuthRequestresponse.SigninRequest.newBuilder()
-        .setUsername(grpcUser.username)
-        .setPassword(grpcUser.password)
-        .build()
-    )
-  }.let { response ->
-    Authentication(
-      token = response.accessToken
-    )
-  }
 
   override fun getMeasurementList(authentication: Authentication): List<AnalysisSummary> = try {
     val metadata = setMetadata(authentication)

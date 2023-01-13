@@ -1,23 +1,19 @@
-package com.aoe.alloypricecalculator.service
+package com.aoe.alloypricecalculator.application
 
-import com.aoe.alloypricecalculator.service.converter.MetalPriceConverter
 import com.aoe.alloypricecalculator.createSlf4jLogger
 import com.aoe.alloypricecalculator.domain.CurrencyRateRepository
+import com.aoe.alloypricecalculator.domain.MetalPriceClient
 import com.aoe.alloypricecalculator.domain.MetalPriceRepository
 import com.aoe.alloypricecalculator.domain.MetalPriceService
 import com.aoe.alloypricecalculator.domain.model.Currency
 import com.aoe.alloypricecalculator.domain.model.MetalPrice
-import com.aoe.alloypricecalculator.exception.MetalsApiFailedException
-import org.springframework.beans.factory.annotation.Qualifier
+import com.aoe.alloypricecalculator.domain.exception.MetalPriceClientException
+import com.aoe.alloypricecalculator.domain.exception.MetalsApiFailedException
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestClientException
-import org.springframework.web.client.RestTemplate
 
 @Service
 class MetalPriceServiceImpl(
-  @Qualifier("mockApiRestTemplate")
-  private val restTemplate: RestTemplate,
-  private val metalPriceConverter: MetalPriceConverter,
+  private val metalPriceClient: MetalPriceClient,
   private val metalPriceRepository: MetalPriceRepository,
   private val currencyRateRepository: CurrencyRateRepository,
 ) : MetalPriceService {
@@ -25,21 +21,18 @@ class MetalPriceServiceImpl(
   private val logger = createSlf4jLogger()
 
   override fun getMetalPrices(): List<MetalPrice> = try {
-    restTemplate
-      .getForObject("/prices2", String::class.java)!!.let { response ->
-        metalPriceConverter.convertCurrencyRates(response).also {
-          if (it.isNotEmpty()) {
-            saveCurrencyRatesOrUpdateExisting(it)
-          }
-        }
-        metalPriceConverter.convertMetalPrices(response).also {
-          if (it.isNotEmpty()) {
-            savePricesOrUpdateExisting(it)
-          }
-        }
-        metalPriceRepository.findAll()
+    metalPriceClient.getMetalPrices().let {
+      if (it.metalprices.isNotEmpty()) {
+        savePricesOrUpdateExisting(it.metalprices)
       }
-  } catch (ex: RestClientException) {
+
+      if (it.currencyRates.isNotEmpty()) {
+        saveCurrencyRatesOrUpdateExisting(it.currencyRates)
+      }
+    }
+    metalPriceRepository.findAll()
+
+  } catch (ex: MetalPriceClientException) {
     logger.error("External API not responding")
     val savedPrices = metalPriceRepository.findAll()
     throw MetalsApiFailedException(savedPrices, "External API not responding")

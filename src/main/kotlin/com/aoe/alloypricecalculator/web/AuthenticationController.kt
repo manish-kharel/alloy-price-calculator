@@ -1,9 +1,9 @@
 package com.aoe.alloypricecalculator.web
 
-import com.aoe.alloypricecalculator.domain.MeasurementService
+import com.aoe.alloypricecalculator.domain.AuthenticationService
 import com.aoe.alloypricecalculator.domain.model.Authentication
 import com.aoe.alloypricecalculator.domain.model.GrpcUser
-import com.aoe.alloypricecalculator.exception.InvalidAuthenticationException
+import com.aoe.alloypricecalculator.domain.exception.InvalidAuthenticationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @CrossOrigin
 class AuthenticationController(
-  private val measurementService: MeasurementService
+  private val authenticationService: AuthenticationService
 ) {
 
   @PostMapping(path = ["/getAuthentication"], consumes = [MediaType.APPLICATION_JSON_VALUE])
   fun getAuthentication(
     @RequestBody grpcUser: GrpcUser
-  ): ResponseEntity<Authentication> = measurementService.getAuthentication(grpcUser).let { authentication ->
+  ): ResponseEntity<Authentication> = authenticationService.getAuthentication(grpcUser).let { authentication ->
     if (authentication.token.isNotBlank())
       ResponseEntity(authentication, HttpStatus.OK)
     else

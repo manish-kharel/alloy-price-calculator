@@ -18,7 +18,6 @@ data class ResultPrice(
 
   @Id
   val name: String,
-
   val sampleWeight : Double,
 
   @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, targetEntity = ElementValue::class)

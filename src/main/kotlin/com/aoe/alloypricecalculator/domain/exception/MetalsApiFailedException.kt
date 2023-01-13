@@ -1,4 +1,4 @@
-package com.aoe.alloypricecalculator.exception
+package com.aoe.alloypricecalculator.domain.exception
 
 import com.aoe.alloypricecalculator.domain.model.MetalPrice
 

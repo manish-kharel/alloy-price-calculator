@@ -1,4 +1,4 @@
-package com.aoe.alloypricecalculator.service.converter
+package com.aoe.alloypricecalculator.infrastructure.converter
 
 import client.v1.MeasurementEntity
 import org.springframework.stereotype.Component

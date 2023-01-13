@@ -1,4 +1,4 @@
-package com.aoe.alloypricecalculator.service.converter
+package com.aoe.alloypricecalculator.infrastructure.converter
 
 import com.aoe.alloypricecalculator.domain.model.Currency
 import com.aoe.alloypricecalculator.domain.model.Metal
