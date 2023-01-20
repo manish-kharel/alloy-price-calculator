@@ -1,0 +1,56 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/device/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+import "device_requestresponse.proto";
+
+service DeviceService {
+  rpc GetPublicDeviceInfo(GetPublicDeviceInfoRequest) returns (GetPublicDeviceInfoResponse) {};
+  rpc GetPrivateDeviceInfo(GetPrivateDeviceInfoRequest) returns (GetPrivateDeviceInfoResponse) {};
+  rpc GetDeviceStatus(GetDeviceStatusRequest) returns (GetDeviceStatusResponse) {};
+  rpc TriggerShutdown(TriggerShutdownRequest) returns (TriggerShutdownResponse) {};
+  rpc SwitchTrigger(SwitchTriggerRequest) returns (SwitchTriggerResponse) {};
+}
+
+
+service WifiService {
+  rpc AvailableNetworks(AvailableNetworksRequest) returns (AvailableNetworksResponse);
+  rpc SavedNetworks(SavedNetworksRequest) returns (SavedNetworksResponse);
+  rpc WifiStatus(WifiStatusRequest) returns (WifiStatusResponse);
+  rpc RemoveNetwork(RemoveNetworkRequest) returns (RemoveNetworkResponse);
+  rpc Connect(ConnectRequest) returns (ConnectResponse);
+  rpc Disconnect(DisconnectRequest) returns (DisconnectResponse);
+  rpc SwitchWifiDevice(SwitchWifiDeviceRequest) returns (SwitchWifiDeviceResponse);
+}
+
+
+service BluetoothService {
+  rpc AvailableDevices(AvailableDevicesRequest) returns (stream AvailableDevicesResponse);
+  rpc SavedDevices(SavedDevicesRequest) returns (SavedDevicesResponse);
+  rpc BluetoothStatus(BluetoothStatusRequest) returns (BluetoothStatusResponse);
+  rpc RemoveDevice(RemoveDeviceRequest) returns (RemoveDeviceResponse);
+  rpc ConnectBluetooth(ConnectBluetoothRequest) returns (ConnectBluetoothResponse);
+  rpc DisconnectBluetooth(DisconnectBluetoothRequest) returns (DisconnectBluetoothResponse);
+  rpc SwitchBluetoothDevice(SwitchBluetoothDeviceRequest) returns (SwitchBluetoothDeviceResponse);
+}
+
+
+service SettingsService {
+  rpc GetHostName(GetHostNameRequest) returns (GetHostNameResponse);
+  rpc SetHostName(SetHostNameRequest) returns (SetHostNameResponse);
+  rpc GetDeviceName(GetDeviceNameRequest) returns (GetDeviceNameResponse);
+  rpc SetDeviceName(SetDeviceNameRequest) returns (SetDeviceNameResponse);
+  rpc SetDeviceLocale(SetDeviceLocaleRequest) returns(SetDeviceLocaleResponse);
+  rpc GetDeviceLocale(GetDeviceLocaleRequest) returns(GetDeviceLocaleResponse);
+  rpc GetDeviceSettings(GetDeviceSettingsRequest) returns(GetDeviceSettingsResponse);
+  rpc GetDeviceTime(GetDeviceTimeRequest) returns (GetDeviceTimeResponse);
+  rpc SetDeviceTime(SetDeviceTimeRequest) returns (SetDeviceTimeResponse);
+  rpc GetSafetySettings(GetSafetySettingsRequest) returns (GetSafetySettingsResponse);
+  rpc SetSafetySettings(SetSafetySettingsRequest) returns (SetSafetySettingsResponse);
+}
+
+service CameraService {
+  rpc GetMicrocamImage(GetMicrocamImageRequest) returns (GetMicrocamImageResponse);
+  rpc GetMicrocamStream(GetMicrocamStreamRequest) returns (stream GetMicrocamStreamResponse);
+}

@@ -1,0 +1,74 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/shared/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+
+enum Locale {
+  LOCALE_UNSPECIFIED = 0;
+  LOCALE_EN_US = 1;
+  LOCALE_DE_DE = 2;
+  LOCALE_FR_FR = 3;
+}
+
+enum Theme {
+  THEME_UNSPECIFIED = 0;
+  THEME_LIGHT = 1;
+  THEME_DARK = 2;
+}
+
+message Config {
+  Theme theme = 1;
+  Locale language = 2;
+  bool fast_processing = 3;
+  bool show_measurement_number = 4;
+  bool two_hand_usage = 5;
+}
+
+message Image {
+  string type = 1;
+  string data = 2;
+}
+
+message Pagination {
+  int32 per_page = 1;
+  int32 page = 2;
+}
+
+message PaginationInfo {
+  int32 first = 1;
+  int32 last = 2;
+  int32 prev = 3;
+  int32 next = 4;
+  int32 total = 5;
+}
+
+message DimensionedQuantity {
+  double value = 1;
+  Unit unit = 2;
+}
+
+
+message Range {
+  double minimum = 1;
+  double maximum = 2;
+  Unit unit = 3;
+}
+
+
+
+message PropertyValidation {
+  message PropertyError {
+    string property = 1;
+    string error_type = 2;
+  }
+  repeated PropertyError errors = 1;
+}
+
+enum Unit {
+  UNIT_UNSPECIFIED = 0;
+  UNIT_OTHER = 1;
+  UNIT_COUNTS = 2;
+  UNIT_CPS = 3;
+  UNIT_WEIGHT_PERCENT = 4;
+}

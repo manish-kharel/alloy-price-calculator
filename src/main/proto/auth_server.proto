@@ -1,0 +1,32 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/auth/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+
+import "auth_requestresponse.proto";
+
+// Authentication
+
+service AuthenticationService {
+  rpc AvailableUsers(AvailableUsersRequest) returns (AvailableUsersResponse);
+  rpc Signin(SigninRequest) returns (SigninResponse);
+  rpc Refresh(RefreshRequest) returns (RefreshResponse);
+  rpc MyPermissions(MyPermissionsRequest) returns (MyPermissionsResponse);
+}
+
+// User
+
+service UserService {
+  rpc InitializeUser(InitializeUserRequest) returns (InitializeUserResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+  rpc GetAvailableUserOptions(GetAvailableUserOptionsRequest) returns(GetAvailableUserOptionsResponse);
+  rpc GetMyUserSettings(GetMyUserSettingsRequest) returns(GetMyUserSettingsResponse);
+  rpc UpdateMyUserSettings(UpdateMyUserSettingsRequest) returns(UpdateMyUserSettingsResponse);
+  rpc ListRoles(ListRolesRequest) returns (ListRolesResponse) {}
+  rpc DeleteRole(DeleteRoleRequest) returns (DeleteRoleResponse) {}
+}

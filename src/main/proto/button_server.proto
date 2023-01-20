@@ -1,0 +1,17 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/device/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+
+message ButtonEventRequest {
+  string key = 1;
+  string code = 2;
+  string state = 3;
+}
+
+message ButtonEventResponse {}
+
+service ButtonService {
+  rpc ButtonEvent(ButtonEventRequest) returns (ButtonEventResponse) {};
+}

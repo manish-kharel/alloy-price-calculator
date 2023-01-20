@@ -1,0 +1,33 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/notification/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+import "device_entity.proto";
+import "measurement_entity.proto";
+import "shared_entity.proto";
+
+
+message NotificationSubscribeRequest {
+  repeated string topic = 1;
+}
+
+message NotificationSubscribeResponse {
+  string topic = 1;
+  oneof payload {
+    WifiStatus wifi_status = 2;
+    PowerStatus power_status = 3;
+    MeasurementResult measurement_result = 4;
+    EnergyCalibrationResult energy_calibration_result = 5;
+    ButtonAction button_action = 6;
+    string date_time = 7;
+    DeviceShutdownInitiated device_shutdown_initiated = 8;
+    PropertyValidation property_validation = 9;
+    BluetoothStatus bluetooth_status = 10;
+    ExportMeasurement measurement_export_result = 11;
+  }
+}
+
+service NotificationService {
+  rpc NotificationSubscribe(NotificationSubscribeRequest) returns (stream NotificationSubscribeResponse) {}
+}

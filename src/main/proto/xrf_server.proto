@@ -1,0 +1,44 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/xrf/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+import "google/protobuf/duration.proto";
+import "measurement_entity.proto";
+import "shared_entity.proto";
+
+message ExecuteRequest {
+  message ReferenceGroup {
+
+    string name = 1;
+    repeated Specification references = 2;
+  }
+
+  string mode = 1; // identify/verify - TODO should be replaced by profile
+  // Profile profile = 1;
+  repeated ReferenceGroup reference_groups = 2;
+}
+
+message ExecuteResponse {
+  string base = 1;
+
+  message Result {
+    string name = 1;
+    double value = 2;
+    double stddev = 3;
+    Unit unit = 4;
+  }
+  repeated Result results = 2;
+
+  message Match {
+    string name = 1;
+    float percentage = 2;
+  }
+  repeated Match matches = 3;
+
+  google.protobuf.Duration duration = 4;
+}
+
+service ExecutionService {
+  rpc Execute(ExecuteRequest) returns (stream ExecuteResponse);
+}

@@ -1,0 +1,186 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/device/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+import "device_entity.proto";
+import "shared_entity.proto";
+
+message GetPublicDeviceInfoRequest {}
+message GetPublicDeviceInfoResponse {
+  DeviceInfo device_info = 1;
+}
+
+message GetPrivateDeviceInfoRequest {}
+message GetPrivateDeviceInfoResponse {
+  PrivateDeviceInfo device_info = 1;
+}
+
+message GetDeviceStatusRequest {}
+message GetDeviceStatusResponse {
+  PowerStatus power_status = 1;
+  WifiStatus wifi_status = 2;
+  BluetoothStatus bluetooth_status = 3;
+  DetectorStatus source_status = 4;
+  SourceStatus detector_status = 5;
+  bool ready_to_fire = 6;
+  string date_time = 7;
+}
+
+message TriggerShutdownRequest {}
+message TriggerShutdownResponse {}
+
+message ConnectRequest {
+  message EapCredentials {
+  }
+  string ssid = 1;
+  oneof credentials {
+    string psk = 3;
+    EapCredentials eap = 4;
+  }
+}
+message ConnectResponse {}
+
+message WifiStatusRequest {}
+message WifiStatusResponse {
+  WifiStatus status = 12;
+}
+
+message GetHostNameRequest {}
+message GetHostNameResponse {
+  string name = 1;
+}
+
+message SetHostNameRequest {
+  string name = 1;
+  bool dry_run = 2;
+}
+message SetHostNameResponse {}
+
+message GetDeviceNameRequest {}
+message GetDeviceNameResponse {
+  string name = 1;
+}
+
+message SetDeviceNameRequest {
+  string name = 1;
+  bool dry_run = 2;
+}
+message SetDeviceNameResponse {}
+
+message SetDeviceLocaleRequest {
+  Locale locale = 1;
+}
+message SetDeviceLocaleResponse {}
+
+message GetDeviceLocaleRequest {
+}
+message GetDeviceLocaleResponse {
+  Locale locale = 1;
+}
+
+message GetDeviceSettingsRequest {}
+message GetDeviceSettingsResponse {
+  Config config = 1;
+}
+
+message SwitchWifiDeviceRequest {
+  bool enabled = 1;
+}
+message SwitchWifiDeviceResponse {}
+
+message DisconnectRequest {}
+message DisconnectResponse {}
+
+message RemoveNetworkRequest{
+  string ssid = 1;
+}
+message RemoveNetworkResponse{}
+
+message AvailableNetworksRequest {}
+message AvailableNetworksResponse {
+  repeated WifiNetwork networks = 1;
+}
+
+message SavedNetworksRequest{}
+message SavedNetworksResponse{
+  repeated WifiNetwork networks = 1;
+}
+
+message SwitchTriggerRequest{
+  bool enabled = 1;
+}
+
+message SwitchTriggerResponse{}
+
+message GetDeviceTimeRequest {}
+message GetDeviceTimeResponse {
+  string date_time = 1; // RFC3339
+}
+
+message SetDeviceTimeRequest {
+  string date_time = 1; // RFC3339
+}
+message SetDeviceTimeResponse {
+}
+
+message GetMicrocamStreamRequest {}
+
+message GetMicrocamStreamResponse {
+  string frame = 1;
+}
+
+message AvailableDevicesRequest{}
+message AvailableDevicesResponse{
+  BluetoothDevice device = 1;
+}
+
+message SavedDevicesRequest{}
+message SavedDevicesResponse{
+  repeated BluetoothDevice devices = 1;
+}
+
+message BluetoothStatusRequest {}
+
+message BluetoothStatusResponse {
+  BluetoothStatus status = 1;
+}
+
+message RemoveDeviceRequest {
+  string device_mac_address = 1;
+}
+
+message RemoveDeviceResponse {}
+
+message ConnectBluetoothRequest {
+  string device_mac_address = 1;
+}
+
+message ConnectBluetoothResponse {}
+
+message DisconnectBluetoothRequest {
+  string device_mac_address = 1;
+}
+
+message GetMicrocamImageRequest {}
+
+message GetMicrocamImageResponse {
+  string frame = 1;
+}
+
+message DisconnectBluetoothResponse{}
+
+message SwitchBluetoothDeviceRequest {
+  bool enabled = 1;
+}
+
+message SwitchBluetoothDeviceResponse {}
+
+message GetSafetySettingsRequest{}
+message GetSafetySettingsResponse{
+  SafetySettings safety_settings = 1;
+}
+message SetSafetySettingsRequest{
+  SafetySettings safety_settings = 1;
+}
+message SetSafetySettingsResponse{}

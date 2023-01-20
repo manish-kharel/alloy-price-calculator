@@ -1,0 +1,122 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/device/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+import "shared_entity.proto";
+
+message DeviceInfo {
+  string device_type = 1;
+  string serial_number = 2;
+  string device_name = 3;
+  Locale device_locale = 4;
+  string software_version = 5;
+}
+
+message PrivateDeviceInfo {
+  string device_type = 1;
+  string serial_number = 2;
+  string device_name = 3;
+  Locale device_locale = 4;
+  string software_version = 5;
+  string mcu_firmware_version = 6;
+
+}
+
+message DeviceShutdownInitiated {
+  enum ReasonType {
+    REASON_TYPE_UNSPECIFIED = 0;
+    REASON_TYPE_CLIENT_INITIATED = 1;
+  }
+  ReasonType reason = 1;
+}
+
+message BluetoothStatus {
+  bool enabled = 1;
+  bool connected = 2;
+}
+
+message PowerStatus {
+  bool cable_connected = 1;
+  bool battery_connected = 2;
+  float battery_level = 3;
+}
+
+enum SignalStrength {
+  SIGNAL_STRENGTH_NONE_UNSPECIFIED = 0;
+  SIGNAL_STRENGTH_WEAK = 1;
+  SIGNAL_STRENGTH_GOOD = 2;
+  SIGNAL_STRENGTH_EXCELLENT = 3;
+}
+
+message WifiStatus {
+  bool enabled = 1;
+  bool connected = 2;
+  SignalStrength signal_strength = 3;
+  string ip_address = 4;
+}
+
+// TODO - think about enum
+message DetectorStatus {
+  bool is_cooling = 1;
+  bool is_heating = 2;
+  bool is_ready = 3;
+}
+
+// TODO - think about enum
+message SourceStatus {
+  bool is_cooling = 1;
+  bool is_heating = 2;
+  bool is_ready = 3;
+}
+
+message WifiNetwork {
+  message WifiStandard {
+    string name = 1;
+    string simple_name = 2;
+  }
+  enum EncryptionType {
+    ENCRYPTION_TYPE_NONE_UNSPECIFIED = 0;
+    ENCRYPTION_TYPE_WPA_PSK = 1;
+  }
+
+  string ssid = 1;
+  int32 frequency = 2;
+  EncryptionType encryption_type = 4;
+  WifiStandard wifi_standard = 5;
+  SignalStrength signal_strength = 6;
+  bool connected = 7;
+  bool saved = 8;
+  string ip_address = 9;
+}
+
+message ButtonAction {
+  enum ButtonType {
+    BUTTON_TYPE_UNSPECIFIED = 0;
+    BUTTON_TYPE_TOP = 1;
+    BUTTON_TYPE_RIGHT = 2;
+    BUTTON_TYPE_BOTTOM = 3;
+    BUTTON_TYPE_LEFT = 4;
+    BUTTON_TYPE_OK = 5;
+    BUTTON_TYPE_TRIGGER = 6;
+  }
+
+  enum ButtonState {
+    BUTTON_STATE_UNSPECIFIED = 0;
+    BUTTON_STATE_DOWN = 1;
+    BUTTON_STATE_UP = 2;
+  }
+
+  ButtonType button_type = 1;
+  ButtonState button_state = 2;
+}
+
+message BluetoothDevice {
+  string local_name = 1;
+  string mac_address = 2;
+  bool connected = 3;
+}
+
+message SafetySettings {
+  bool two_hand_usage = 1;
+}

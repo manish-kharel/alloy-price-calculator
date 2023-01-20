@@ -4,16 +4,35 @@ spring:
   main:
     banner-mode: off
   datasource:
-    url: jdbc:mysql://localhost:3306
+    url: jdbc:mysql://localhost:3306/sql
     username: root
     password: asdfgLKJH1@
-    driver-class-name: com.mysql.jdbc.Driver
-  liquibase:
-    enabled: true
-    change-log: classpath:/db/liquibase/changelog-master.xml
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  #  liquibase:
+#    enabled: true
+#    change-log: classpath:/db/liquibase/changelog-master.xml
   cache:
     jcache:
       config: classpath:/config/ehcache.xml
   sql:
     init:
       platform: mysql
+
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      default:
+#        failureRateThreshold: 50
+#        slidingWindowType: COUNT_BASED
+#        slidingWindowSize: 10
+#        minimumNumberOfCalls: 10
+#        waitDurationInOpenState: 20s
+#        permittedNumberOfCallsInHalfOpenState: 2
+#        registerHealthIndicator: true
+
+application:
+  mockApi:
+    url: http://localhost:9003

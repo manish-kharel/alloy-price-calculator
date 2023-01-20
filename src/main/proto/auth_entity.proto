@@ -1,0 +1,36 @@
+syntax = "proto3";
+package client.v1;
+
+option go_package = "go.analyticon.eu/firefly/backend-client/pkg/auth/interface/grpc/generated";
+option csharp_namespace = "Analyticon.Elemental.FenXT";
+
+import "shared_entity.proto";
+
+message User {
+  string uuid = 1;
+  enum AuthType {
+    AUTH_TYPE_UNSPECIFIED = 0;
+    AUTH_TYPE_USERNAME_PASSWORD = 1;
+    AUTH_TYPE_USERNAME_PIN = 2;
+  };
+  AuthType auth_type = 2;
+
+  string username = 4;
+  string first_name = 5;
+  string last_name = 6;
+  string email = 7;
+  repeated Role roles = 8;
+  bool factory = 9;
+  Config config = 10;
+  bool current_user = 13;
+}
+
+message AuthenticationData {
+  string password = 1;
+}
+
+message Role {
+  string uuid = 1;
+  string name = 2;
+  bool has_safety_restrictions = 3;
+}
