@@ -101,7 +101,7 @@ function Homepage(props) {
         <div>
             <Container maxWidth="lg">
                 {!realtimeStatus &&
-                    <Alert severity="error" sx={{fontSize: "18px"}}>Metals API Server is down. Value is not
+                    <Alert severity="warning" sx={{fontSize: "18px"}}>Metals API Server is down. Value is not
                         Realtime!</Alert>}
                 <TableContainer sx={{maxHeight: 440}}>
                     <Table stickyHeader size="medium">
@@ -122,7 +122,6 @@ function Homepage(props) {
                                             MenuProps={MenuProps}
                                             autowidth="true"
                                         >
-
                                             {currencyRates.map((currency) => (
                                                 <MenuItem value={currency.currency}>{currency.currency}</MenuItem>
 
