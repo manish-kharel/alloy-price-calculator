@@ -5,14 +5,14 @@ import LoginPage from "./pages/LoginPage";
 import AnalysisSummariesPage from "./pages/AnalysisSummariesPage";
 import PrivateLayout from "./helper/hoc/PrivateLayout";
 import ManualInputPage from "./pages/ManualInputPage";
-import Navbar from "./helper/Navbar";
 
+import Navbar from './helper/component/Navbar';
 
 function App() {
     return (
         <div className="App">
             <Router>
-                <Navbar/>
+            <Navbar/>
                 <Routes>
                     <Route path="/" element={<Homepage/>}></Route>
                     <Route path="/login" element={<LoginPage/>}></Route>

@@ -18,6 +18,8 @@ import {getAllMetalPrices, getListOfAllExchangeRates} from "../helper/Controller
 import {Button} from "@mui/material";
 import {useNavigate} from "react-router-dom"
 
+import SavedResult from './SavedResult';
+
 function Homepage(props) {
     let navigate = useNavigate()
     const [page, setPage] = React.useState(0);
@@ -27,6 +29,7 @@ function Homepage(props) {
     const [currencyRates, setCurrencyRates] = useState([])
     const [selectedCurrency, setSelectedCurrency] = useState("USD");
     const [currencyMap, setCurrencyMap] = useState(new Map);
+    const [savedResultShower, setSavedResultShower] = useState(false);
 
     useEffect(() => {
 
@@ -49,12 +52,9 @@ function Homepage(props) {
 
             })
             setCurrencyMap(temp)
-
         }).catch(error => {
             console.log(error);
         })
-
-
     }, [])
 
     const handleChangeRowsPerPage = (event) => {
@@ -65,6 +65,7 @@ function Homepage(props) {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+
 
     const columns = [
         {id: 'id', label: 'Id', minWidth: 170, align: 'center'},
@@ -79,11 +80,9 @@ function Homepage(props) {
         },
     ];
 
-
     const handleCurrencyChange = (event) => {
         setSelectedCurrency(event.target.value);
         console.log(event.target.value)
-
     };
 
     const ITEM_HEIGHT = 40;
@@ -101,7 +100,7 @@ function Homepage(props) {
         <div>
             <Container maxWidth="lg">
                 {!realtimeStatus &&
-                    <Alert severity="warning" sx={{fontSize: "18px"}}>Metals API Server is down. Value is not
+                    <Alert severity="error" sx={{fontSize: "18px"}}>Metals API Server is down. Value is not
                         Realtime!</Alert>}
                 <TableContainer sx={{maxHeight: 440}}>
                     <Table stickyHeader size="medium">
@@ -179,6 +178,12 @@ function Homepage(props) {
                 <Button onClick={() => navigate("/login")}>
                     Fetch from XRF Device</Button>
                 <Button onClick={() => navigate("/manualInput",)}>Enter Data Manually</Button>
+
+                <div>
+                    <Button variant="contained" onClick={() => setSavedResultShower(true)} sx={{margin: "30px"}}>Show
+                        Previously saved Results</Button>
+                </div>
+                {savedResultShower && <SavedResult/>}
             </Container>
         </div>
     );

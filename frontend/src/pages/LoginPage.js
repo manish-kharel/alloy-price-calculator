@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,10 +8,9 @@ import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {getAuthentication} from "../helper/Controller";
 import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 
 const theme = createTheme();
-
-
 export default function SignIn() {
 
     const [auth, setAuth] = useState(false)

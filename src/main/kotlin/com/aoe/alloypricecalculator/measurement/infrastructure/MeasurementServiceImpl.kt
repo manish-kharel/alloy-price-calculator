@@ -24,7 +24,7 @@ class MeasurementServiceImpl(
 
   val logger = createSlf4jLogger()
 
-  override fun getMeasurementList(authentication: Authentication): List<AnalysisSummary> = try {
+  override fun getAnalysisSummaries(authentication: Authentication): List<AnalysisSummary> = try {
     val metadata = setMetadata(authentication)
 
     MeasurementServiceGrpc.newBlockingStub(channel).run {

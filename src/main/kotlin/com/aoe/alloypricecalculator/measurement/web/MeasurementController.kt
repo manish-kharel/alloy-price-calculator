@@ -18,11 +18,11 @@ class MeasurementController(
   @GetMapping(path = ["/getAnalysisSummaryList"], produces = [MediaType.APPLICATION_JSON_VALUE])
   fun requestAnalysisSummaryList(
     @RequestHeader(required = true) authentication: Authentication
-  ) = measurementService.getMeasurementList(authentication)
+  ) = measurementService.getAnalysisSummaries(authentication)
 
   @GetMapping(path = ["/getMeasurement"])
   fun requestMeasurementValues(
     @RequestHeader(required = true) authentication: Authentication,
-    @RequestParam uuid: String
+    @RequestParam uuid: String,
   ) = measurementService.getMeasurementValues(authentication, uuid)
 }

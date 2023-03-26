@@ -3,9 +3,11 @@ package com.aoe.alloypricecalculator.resultprice.web
 import com.aoe.alloypricecalculator.resultprice.domain.ResultPriceRepository
 import com.aoe.alloypricecalculator.resultprice.domain.model.ResultPrice
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -24,11 +26,12 @@ class ResultPriceController(
 
   @GetMapping("/getCalculationSummary")
   fun getResultPrice(
-    @RequestBody request: ResultPriceRequest,
-  ) = resultPriceRepository.findById(request.name)
+    @RequestParam name: String,
+  ) = resultPriceRepository.findById(name)
 
-  class ResultPriceRequest(
-    val name: String
-  )
+  @DeleteMapping("deletePrice")
+  fun deletePrice(
+    @RequestParam name: String,
+  ) = resultPriceRepository.deleteById(name)
 }
 

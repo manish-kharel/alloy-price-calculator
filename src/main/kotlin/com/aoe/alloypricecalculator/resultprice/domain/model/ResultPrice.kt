@@ -19,12 +19,14 @@ data class ResultPrice(
 
   @Id
   val name: String,
-  val sampleWeight : Double,
+  val sampleWeight: Double,
+  val currency: String,
 
   @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, targetEntity = ElementValue::class)
   @JoinColumn(name = "rs_fk", referencedColumnName = "name")
   val elementValues: List<ElementValue>,
 
+  val totalPrice: Double,
   ) {
   @Entity
   data class ElementValue(

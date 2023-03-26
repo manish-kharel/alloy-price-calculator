@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component
 
 @Component
 interface MeasurementService {
-  fun getMeasurementList(authentication: Authentication): List<AnalysisSummary>
+  fun getAnalysisSummaries(authentication: Authentication): List<AnalysisSummary>
   fun getMeasurementValues(authentication: Authentication, measurement_uuid: String): List<Measurement>
 }
